@@ -16,6 +16,14 @@ files that have numeric identifiers, if you are trying to read a file that has
 one, you _must_ supply all 3 RGB/HSL values, otherwise it will read your
 filename as an RGB/HSL value, and complain that there is no input file.
 
+### Issues
+There are slight inaccuracies when performing conversions between RGB, HSL, and hex. This doesn't bother me enough to fix it.
+In addition, HSL operations seem to very consistently cause colors to shift towards the darker end, I don't know why and have no intention of figuring it out, but it's likely to do with the RGB to HSL to RGB conversions.
+
+The program works fine for me as is, and has successfully done the one thing I needed it to do, which was shift the hue on some of the svgs used by my Plasma theme, so whatever problems it still has are not a great concern for me.
+
+### Contributing
+Feel free to send PRs with whatever, I'll accept just about any change if it does something meaningful.
 
 ### Building svgshift
 It should compile on literally anything, there are no external dependencies, and it's even C89 compatible (ok, technically the usage string is *slightly* longer than C89 compilers are required to support, but still!)
