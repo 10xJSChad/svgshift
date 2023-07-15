@@ -35,8 +35,8 @@ f_round(float x)
 
 float
 f_max(float r,
-     float g,
-     float b)
+      float g,
+      float b)
 {
     float max;
 
@@ -49,8 +49,8 @@ f_max(float r,
 
 float
 f_min(float r,
-     float g,
-     float b)
+      float g,
+      float b)
 {
     float min;
 
