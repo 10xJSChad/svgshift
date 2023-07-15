@@ -26,7 +26,7 @@ The program works fine for me as is, and has successfully done the one thing I n
 Feel free to send PRs with whatever, I'll accept just about any change if it does something meaningful.
 
 ### Building svgshift
-It should compile on literally anything, there are no external dependencies, and it's even C89 compatible (ok, technically the usage string is *slightly* longer than C89 compilers are required to support, but still!)
+It should compile on literally anything, there are no external dependencies, and it's even C89 compatible (ok, technically the usage string is *slightly* longer than C89 compilers are required to support, but still!).
 
 
 ### Using svgshift
