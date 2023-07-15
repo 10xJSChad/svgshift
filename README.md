@@ -18,7 +18,7 @@ filename as an RGB/HSL value, and complain that there is no input file.
 
 ### Issues
 There are slight inaccuracies when performing conversions between RGB, HSL, and hex. This doesn't bother me enough to fix it.
-In addition, HSL operations seem to very consistently cause colors to shift towards the darker end, I don't know why and have no intention of figuring it out, but it's likely to do with the RGB to HSL to RGB conversions.
+In addition, HSL operations seem to very consistently cause colors to shift towards the darker end, I don't know why and have no intention of figuring it out, but it's likely to do with the RGB to HSL to RGB conversions. This bug is pretty clearly visible in the preview video, where the grey circles in the output file are significantly darker than the ones in the input file.
 
 The program works fine for me as is, and has successfully done the one thing I needed it to do, which was shift the hue on some of the svgs used by my Plasma theme, so whatever problems it still has are not a great concern for me.
 
