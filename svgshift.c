@@ -246,6 +246,12 @@ main(int    argc,
         print_usage_and_exit(usage_str);
 
     file = fopen(*argv, "r");
+    
+    if (file == NULL) {
+        printf("Could not open file %s\n", *argv);
+        exit(1);
+    }
+    
     manipulate(file, operation_function);
 
     return 0;
