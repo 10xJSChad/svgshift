@@ -3,8 +3,14 @@ svgshift performs quick and easy color manipulation on svg files, because
 editing those manually required some software I didn't have. It can also be used to manipulate the colors of just about any file
 with a format that stores its color information in plaintext as hex colors.
 
+------
+
 ### Preview
 https://github.com/10xJSChad/svgshift/assets/48174610/5f52c904-810f-4b54-9726-d10f02bf72d7
+
+(Note that this preview shows a bug where HSL operations would make the greys become significantly darker, this is now fixed.)
+
+------
 
 ### Limitations
 svgshift does _NOT_ perform any file writing whatsoever, it prints the
