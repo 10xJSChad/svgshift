@@ -10,6 +10,7 @@
 
 #define BUFFER_SIZE 2048
 
+
 #define OPERATION_SET 0
 #define OPERATION_ADD 1
 #define OPERATION_SUB 2
@@ -129,7 +130,7 @@ manipulate(FILE* file,
 void
 print_usage_and_exit(char* usage)
 {
-    printf("%s\n", usage);
+    fprintf(stderr, "%s\n", usage);
     exit(1);
 }
 
@@ -144,6 +145,23 @@ is_numeric(char* str)
             ++str;
 
     return 1;
+}
+
+
+void
+debug_function(void)
+{
+    struct Color new_color = color_code_to_Color("4E4E4E");
+
+    printf("RGB: %d, %d, %d | HSL: %f, %f, %f \n",
+            new_color.rgb.r, new_color.rgb.g, new_color.rgb.b,
+            new_color.hsl.h, new_color.hsl.s, new_color.hsl.l);
+
+    new_color.rgb = HSL_to_RGB(new_color.hsl);
+
+    printf("RGB: %d, %d, %d | HSL: %f, %f, %f \n",
+            new_color.rgb.r, new_color.rgb.g, new_color.rgb.b,
+            new_color.hsl.h, new_color.hsl.s, new_color.hsl.l);
 }
 
 
@@ -204,6 +222,7 @@ main(int    argc,
     "   hsl usage is identical.");
 
 
+    #ifndef DEBUG_MODE
     int i;
     FILE* file;
 
@@ -246,13 +265,15 @@ main(int    argc,
         print_usage_and_exit(usage_str);
 
     file = fopen(*argv, "r");
-    
+
     if (file == NULL) {
         printf("Could not open file %s\n", *argv);
         exit(1);
     }
-    
-    manipulate(file, operation_function);
 
+    manipulate(file, operation_function);
+    #else
+    debug_function();
+    #endif
     return 0;
 }

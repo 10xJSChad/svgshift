@@ -179,7 +179,7 @@ HSL_to_RGB(struct HSL hsl)
     float l = hsl.l / 100;
 
     if (s == 0) {
-        rgb.r = rgb.g = rgb.b = l * 100;
+        rgb.r = rgb.g = rgb.b = (l * 255);
     } else {
         q = l < 0.5 ? l * (1 + s) : l + s - l * s;
         p = 2 * l - q;
