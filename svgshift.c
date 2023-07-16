@@ -148,6 +148,9 @@ is_numeric(char* str)
 }
 
 
+/*
+ * Generic debug function, replace with whatever you want during development.
+ */
 void
 debug_function(void)
 {
