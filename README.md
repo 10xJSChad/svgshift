@@ -68,3 +68,4 @@ Here's an example command to add 255 to the red channel of a file called python-
 
 svgshift addrgb 255 python-original.svg > red-tint-python-original.svg #linux or mac
 ```
+Don't pipe the output into the source svg file, this will result in it being wiped.
