@@ -211,18 +211,19 @@ main(int    argc,
     "   to an output file.\n\n"
 
     "   Additionally, the argument parser is very lazy and does not at all care for\n"
-    "   files that have numeric identifiers, if you are trying to read a file that has\n"
+    "   files that have numeric identifiers, if you want to read a file that has\n"
     "   one, you _must_ supply all 3 RGB/HSL values, otherwise it will read your\n"
     "   filename as an RGB/HSL value, and complain that there is no input file.\n\n"
 
     "EXAMPLES:\n"
-    "   svgshift setrgb 255 icon.svg | Set the red value of every color in icon.svg\n"
-    "   to 255, ignoring the green and blue channels.\n\n"
+    "   svgshift setrgb 255 x x icon.svg | Set the red value of every color\n"
+    "   to 255, leaving green and blue unaffected.\n\n"
 
     "   svgshift setrgb 255 0 0 icon.svg | Make every color in icon.svg fully red, \n"
-    "   overwriting the green and blue channels with 0.\n\n"
+    "   overwriting green and blue with 0.\n\n"
 
-    "   hsl usage is identical.");
+    "   svgshift sethsl x 0 x icon.svg | Set the saturation to 0, leaving \n"
+    "   hue and lightness unaffected.\n");
 
 
     #ifndef DEBUG_MODE
@@ -250,7 +251,8 @@ main(int    argc,
     while (*argv) {
         if (is_numeric(*argv)) {
             values[i] = atoi(*argv);
-            fields_changed[i] = 1;
+            fields_changed[i++] = 1;
+        } else if (**argv == 'x') {
             ++i;
         } else {
             break;

@@ -60,12 +60,10 @@ gcc svgshift.c -o svgshift
 ## Using svgshift
 
 Once it's compiled, just run it once and a usage message should appear guiding you towards great success in color shifting svg files.
-
-Here's an example command to add 255 to the red channel of a file called python-original.svg:
+Here's an example command that will create a greyscale version of an image.
 
 ```sh
-.\svgshift addrgb 255 python-original.svg > red-tint-python-original.svg #windows
-
-svgshift addrgb 255 python-original.svg > red-tint-python-original.svg #linux or mac
+.\svgshift sethsl x 0 x colorful.svg > greyscaled.svg # windows
+svgshift sethsl x 0 x colorful.svg > greyscaled.svg # linux or mac
 ```
 Don't pipe the output into the source svg file, this will result in it being wiped.
