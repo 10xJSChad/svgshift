@@ -14,6 +14,7 @@
 #define OPERATION_SET 0
 #define OPERATION_ADD 1
 #define OPERATION_SUB 2
+#define OPERATION_GREYSCALE 3
 
 
 /*
@@ -71,6 +72,7 @@ next_color_code(char* str)
                 else
                     count = 0;
         }
+
         ++str;
     }
 
@@ -184,6 +186,10 @@ operation_function(struct Color color)
         case OPERATION_SUB:
             PASTE_OPERATION(-=);
             break;
+
+        case OPERATION_GREYSCALE:
+            color.rgb = RGB_greyscale(color.rgb);
+            break;
     }
 
     return color;
@@ -196,7 +202,8 @@ main(int    argc,
 {
     char* usage_str =
     ("USAGE:\n"
-    "   svgshift [set|add|sub][rgb|hsl] [VALUES] [FILE]\n\n"
+    "   svgshift [set|add|sub][rgb|hsl] [VALUES] [FILE]\n"
+    "   svgshift greyscale [FILE]\n\n"
 
     "INFO:\n"
     "   svgshift performs quick and easy color manipulation on svg files, because\n"
@@ -233,18 +240,22 @@ main(int    argc,
     if (argc == 1)
         print_usage_and_exit(usage_str);
 
-    if (strncmp(argv[1], "set", 3) == 0) operation = OPERATION_SET;
-    if (strncmp(argv[1], "add", 3) == 0) operation = OPERATION_ADD;
-    if (strncmp(argv[1], "sub", 3) == 0) operation = OPERATION_SUB;
+    if (strncmp(argv[1], "set", 3) == 0)        operation = OPERATION_SET;
+    if (strncmp(argv[1], "add", 3) == 0)        operation = OPERATION_ADD;
+    if (strncmp(argv[1], "sub", 3) == 0)        operation = OPERATION_SUB;
+    if (strncmp(argv[1], "greyscale", 9) == 0)  operation = OPERATION_GREYSCALE;
+    if (strncmp(argv[1], "grayscale", 9) == 0)  operation = OPERATION_GREYSCALE;
 
     if (operation == -1)
          print_usage_and_exit(usage_str);
 
-    if (strncmp(argv[1]+3, "rgb", 3) == 0) is_rgb = 1;
-    if (strncmp(argv[1]+3, "hsl", 3) == 0) is_rgb = 0;
+    if (operation != OPERATION_GREYSCALE) {
+        if (strncmp(argv[1]+3, "rgb", 3) == 0) is_rgb = 1;
+        if (strncmp(argv[1]+3, "hsl", 3) == 0) is_rgb = 0;
 
-    if (is_rgb == -1)
-         print_usage_and_exit(usage_str);
+        if (is_rgb == -1)
+            print_usage_and_exit(usage_str);
+    }
 
     i = 0;
     argv += 2;
