@@ -215,7 +215,8 @@ HSL_clamp(struct HSL hsl)
 
 
 struct RGB
-RGB_greyscale(struct RGB rgb) {
+RGB_greyscale(struct RGB rgb) 
+{
     int grayscale = (int) (0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b);
     return (struct RGB) {grayscale, grayscale, grayscale};
 }
