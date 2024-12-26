@@ -29,6 +29,8 @@ filename as an RGB/HSL value, and complain that there is no input file.
 
 There are slight inaccuracies when performing conversions between RGB, HSL, and hex. It will likely increment all RGB values by one, this is something I am more or less biologically incapable of noticing, so I don't care much about it, it's definitely caused by the liberal use of int-float-int conversions though.
 
+There's also a few color formats it doesn't handle at all, see [this](https://github.com/10xJSChad/svgshift/issues/2) issue for more information.
+
 The program works fine for me as is, and has successfully done the one thing I needed it to do, which was shift the hue on some of the svgs used by my Plasma theme, so whatever problems it still has are not a great concern for me.
 
 ## Contributing
