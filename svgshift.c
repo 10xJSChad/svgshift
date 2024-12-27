@@ -8,9 +8,6 @@
 #include "color.h"
 
 
-#define BUFFER_SIZE 2048
-
-
 #define OPERATION_SET 0
 #define OPERATION_ADD 1
 #define OPERATION_SUB 2
@@ -50,7 +47,8 @@ int fields_changed[3] = {0, 0, 0};
 
 
 char*
-next_color_code(char* str)
+next_color_code(char* str,
+                int*  color_code_length)
 {
     int count = 0;
     while (*str) {
@@ -64,7 +62,16 @@ next_color_code(char* str)
 
             /* Counted 6 hex digits in a row + the leading octothorpe */
             case 6:
+                *color_code_length = 6;
                 return str - 5;
+
+            case 3:
+                if (!isxdigit(*(str + 1))) {
+                    *color_code_length = 3;
+                    return str - 2;
+                }
+
+            /* Fallthrough */
 
             default:
                 if (isxdigit(*str))
@@ -81,25 +88,32 @@ next_color_code(char* str)
 }
 
 
-int
-read_file_to_buffer(char* buffer,
-                    FILE* file)
+void
+allocate_and_read(FILE* file,
+                  char** dest_buffer,
+                  char** empty_buffer)
 {
-    int i;
-    int read_bytes = fread(buffer, 1, BUFFER_SIZE, file);
+    size_t file_size = 0;
+    size_t read_bytes;
 
-    if (read_bytes == BUFFER_SIZE) {
-        for (i = 0; i < 6; ++i) {
-            /* make sure we're not splitting a color code, go back if we are */
-            if (buffer[BUFFER_SIZE - i] == '#') {
-                fseek(file, -i, SEEK_CUR);
-                read_bytes -= i;
-            }
-        }
+    fseek(file, 0, SEEK_END);
+    file_size = ftell(file);
+    fseek(file, 0, SEEK_SET);
+
+    *dest_buffer = calloc(1, (file_size * 2) + 1);
+    *empty_buffer = calloc(1, (file_size * 2) + 1);
+
+    if (*dest_buffer == NULL || *empty_buffer == NULL) {
+        perror("Error allocating memory");
+        exit(1);
     }
 
-    buffer[read_bytes] = '\0';
-    return read_bytes;
+    read_bytes = fread(*dest_buffer, 1, file_size, file);
+
+    if (read_bytes != file_size) {
+        perror("Error reading file");
+        exit(1);
+    }
 }
 
 
@@ -107,24 +121,28 @@ int
 manipulate(FILE* file,
            struct Color (*func)(struct Color))
 {
-    char*   color_code_ptr;
-    char    buffer[BUFFER_SIZE + 1];
+    char*   left;
+    char*   right;
+    char*   src_buffer;
+    char*   dest_buffer;
     char    new_color_code_ptr[7] = { 0, };
+    int     color_code_length;
+    allocate_and_read(file, &src_buffer, &dest_buffer);
 
 
-    while (read_file_to_buffer(buffer, file)) {
-        color_code_ptr = buffer;
+    left = src_buffer;
+    right = src_buffer;
+    while ((right = next_color_code(right, &color_code_length))) {
+        struct Color new_color = color_code_to_Color(right, color_code_length);
+        Color_to_color_code(func(new_color), new_color_code_ptr);
 
-        while ( (color_code_ptr = next_color_code(color_code_ptr)) ) {
-            struct Color new_color = func(color_code_to_Color(color_code_ptr));
-
-            Color_to_color_code(new_color, new_color_code_ptr);
-            strncpy(color_code_ptr, new_color_code_ptr, 6);
-        }
-
-        printf("%s", buffer);
+        strncat(dest_buffer, left, right - left);
+        strncat(dest_buffer, new_color_code_ptr, 6);
+        left = right + color_code_length;
     }
 
+    strncat(dest_buffer, left, right - left);
+    printf("%s", dest_buffer);
     return 1;
 }
 
@@ -156,17 +174,6 @@ is_numeric(char* str)
 void
 debug_function(void)
 {
-    struct Color new_color = color_code_to_Color("4E4E4E");
-
-    printf("RGB: %d, %d, %d | HSL: %f, %f, %f \n",
-            new_color.rgb.r, new_color.rgb.g, new_color.rgb.b,
-            new_color.hsl.h, new_color.hsl.s, new_color.hsl.l);
-
-    new_color.rgb = HSL_to_RGB(new_color.hsl);
-
-    printf("RGB: %d, %d, %d | HSL: %f, %f, %f \n",
-            new_color.rgb.r, new_color.rgb.g, new_color.rgb.b,
-            new_color.hsl.h, new_color.hsl.s, new_color.hsl.l);
 }
 
 

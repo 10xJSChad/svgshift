@@ -70,6 +70,37 @@ hex_to_decimal(char* hex_str)
 
 
 struct RGB
+color_code_to_short_RGB(char* color_code_start)
+{
+    int i;
+    char curr[3] = { 'A', 'B', '\0' };
+    struct RGB new_color;
+
+    for (i = 0; i < 3; i += 1) {
+        curr[0] = color_code_start[i];
+        curr[1] = color_code_start[i];
+
+        switch (i)
+        {
+            case 0:
+                new_color.r = hex_to_decimal(curr);
+                break;
+
+            case 1:
+                new_color.g = hex_to_decimal(curr);
+                break;
+
+            case 2:
+                new_color.b = hex_to_decimal(curr);
+                break;
+        }
+    }
+
+    return new_color;
+}
+
+
+struct RGB
 color_code_to_RGB(char* color_code_start)
 {
     int i;
@@ -215,7 +246,7 @@ HSL_clamp(struct HSL hsl)
 
 
 struct RGB
-RGB_greyscale(struct RGB rgb) 
+RGB_greyscale(struct RGB rgb)
 {
     int grayscale = (int) (0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b);
     return (struct RGB) {grayscale, grayscale, grayscale};

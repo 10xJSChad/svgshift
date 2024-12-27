@@ -8,10 +8,16 @@ struct Color {
 
 
 struct Color
-color_code_to_Color(char* color_code_start)
+color_code_to_Color(char* color_code_start,
+                    int  color_code_length)
 {
     struct Color new_color;
-    new_color.rgb = color_code_to_RGB(color_code_start);
+
+    if (color_code_length == 6)
+        new_color.rgb = color_code_to_RGB(color_code_start);
+    else
+        new_color.rgb = color_code_to_short_RGB(color_code_start);
+
     new_color.hsl = RGB_to_HSL(new_color.rgb);
 
     return new_color;
